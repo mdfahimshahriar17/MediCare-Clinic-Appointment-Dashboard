@@ -137,7 +137,7 @@ npm run dev
 
 ### Error Boundary
 
-![Error Boundary](screenshots/boundary.png)
+![Error Boundary](screenshots/error-boundary.png)
 
 ---
 
