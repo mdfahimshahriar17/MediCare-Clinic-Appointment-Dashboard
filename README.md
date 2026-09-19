@@ -1,59 +1,57 @@
 # MediCare Clinic — Appointment Dashboard
 
-A frontend-only clinic appointment dashboard built with **React + Vite** and **Tailwind CSS**.
+A frontend-only clinic appointment dashboard built with **React, Vite, and Tailwind CSS**.
+
+---
+
+## Project Overview
+
+MediCare Clinic is a front-desk dashboard for managing doctors and patient appointments.
+
+The application allows users to search and filter doctors, select available doctors, book appointments, update appointment statuses, delete appointments, and view dynamic appointment statistics.
+
+---
 
 ## Features
 
+### Dashboard
 - Dynamic doctor and appointment statistics
-- Doctor search and department filtering
-- Doctor selection with automatic form selection
-- Controlled appointment form
-- Uncontrolled Reference ID field using `useRef`
-- Appointment validation and success feedback
-- Appointment status updates and deletion
-- Status filters with counts
+- Responsive dashboard layout
+
+### Doctor Management
+- Doctor list
+- Search by name
+- Department filtering
+- Available/unavailable states
+- Doctor selection
+
+### Appointment Management
+- Book new appointments
+- Form validation
+- Appointment status management
+- Status filtering
+- Delete appointments
+- Success feedback
 - Empty states
-- Error Boundary and fallback UI
-- Crash Test button
+
+### Error Handling
+- Error Boundary
+- Fallback UI
+- Crash Test
 - Global error logging
 
-## Screenshots
+---
 
-```text
-screenshots/
-├── dashboard.png
-├── booking.png
-└── error-boundary.png
-```
-
-![Dashboard](screenshots/dashboard.png)
-![Booking](screenshots/booking.png)
-![Error Boundary](screenshots/error-boundary.png)
-
-
-## Tech Stack
+## Technologies Used
 
 - React
 - Vite
 - Tailwind CSS
 - JavaScript
-- `useState`
-- `useRef`
-- Class Component for Error Boundary
+- React Hooks
+- Error Boundary
 
-## Setup
-
-```bash
-npm install
-npm run dev
-```
-
-Production build:
-
-```bash
-npm run build
-npm run preview
-```
+---
 
 ## Project Structure
 
@@ -94,67 +92,63 @@ src/
 ├── App.jsx
 ├── main.jsx
 └── index.css
+````
+
+---
+
+## Main Workflow
+
+```text
+Search / Filter Doctor
+        ↓
+Select Doctor
+        ↓
+Book Appointment
+        ↓
+Appointment Created
+        ↓
+Change Status
+        ↓
+Complete / Cancel / Delete
 ```
 
-## React Concepts Used
+---
 
-| Requirement | Concept | Main File(s) |
-|---|---|---|
-| REQ-1 | `.map()` + stable keys | `DoctorList.jsx`, `AppointmentList.jsx` |
-| REQ-2 | Ternary, `&&`, switch, IIFE | `DoctorList.jsx`, `AppointmentForm.jsx`, `AppointmentRow.jsx`, `Header.jsx` |
-| REQ-3 | Lifting state up | `App.jsx` |
-| REQ-4 | Props and callbacks | `DoctorPanel.jsx`, `DoctorList.jsx`, `AppointmentList.jsx` |
-| REQ-5 | Composition / children | `Card.jsx`, `DoctorPanel.jsx` |
-| REQ-6 | Render prop | `FilterableList.jsx`, `DoctorList.jsx`, `AppointmentList.jsx` |
-| REQ-7 | Controlled components | `AppointmentForm.jsx` |
-| REQ-8 | Uncontrolled component + `useRef` | `AppointmentForm.jsx` |
-| REQ-9 | Prop drilling + solution | `App.jsx`, `DoctorPanel.jsx` |
-| REQ-10 | Click and submit events | `DoctorCard.jsx`, `AppointmentRow.jsx`, `AppointmentForm.jsx` |
-| REQ-11 | Error Boundary + Fallback UI | `ErrorBoundary.jsx`, `FallbackUI.jsx`, `CrashTest.jsx` |
-| REQ-12 | Global error handling + logger | `main.jsx`, `logger.js` |
+## Installation
 
-## Prop Drilling
+```bash
+git clone https://github.com/your-username/medicare-clinic.git
+cd medicare-clinic
+npm install
+npm run dev
+```
 
-`selectedDoctorId` is owned by `App.jsx` because both the doctor list and appointment form need the selected doctor.
+---
 
-The project demonstrates the prop-drilling problem and then removes unnecessary drilling using component composition and the `children` prop. `DoctorPanel` handles filtering while `App.jsx` keeps the shared selection state.
+## Screenshots
 
-## Error Handling
+### Dashboard
 
-The project includes:
+![Dashboard](screenshots/dashboard.png)
 
-- `ErrorBoundary` with `getDerivedStateFromError`
-- `componentDidCatch`
-- Reusable `FallbackUI`
-- Try Again button
-- Crash Test button
-- Outer application Error Boundary
-- Separate appointments-panel Error Boundary
-- `window.onerror`
-- `unhandledrejection`
-- Centralized logging in `utils/logger.js`
-- `try/catch` in the appointment submit handler
+### Appointment Booking
 
-An Error Boundary alone does not catch event-handler errors, asynchronous errors, or errors outside React rendering, so global handlers and `try/catch` are also used.
+![Appointment Booking](screenshots/booking.png)
 
-## Data
+### Error Boundary
 
-All data is hard-coded locally in:
+![Error Boundary](screenshots/boundary.png)
 
-- `src/data/doctors.js`
-- `src/data/appointments.js`
+---
 
-No backend, database, REST API, `fetch`, or `axios` is used.
+## Important Notes
 
-## Submission Checklist
+* Frontend-only React project
+* Data is stored in local JavaScript files
+* No backend or API is used
+* Data resets after page refresh
 
-- Public GitHub repository
-- No `node_modules`
-- At least 5 meaningful commits
-- README with screenshots
-- REQ-1 to REQ-12 mapping
-- Prop Drilling explanation
-- Error Handling explanation
+---
 
 ## Author
 
