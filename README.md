@@ -19,8 +19,6 @@ A frontend-only clinic appointment dashboard built with **React + Vite** and **T
 
 ## Screenshots
 
-Place your screenshots in a `screenshots/` folder:
-
 ```text
 screenshots/
 ├── dashboard.png
@@ -28,13 +26,10 @@ screenshots/
 └── error-boundary.png
 ```
 
-Then add:
-
-```md
 ![Dashboard](screenshots/dashboard.png)
 ![Booking](screenshots/booking.png)
 ![Error Boundary](screenshots/error-boundary.png)
-```
+
 
 ## Tech Stack
 
