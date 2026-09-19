@@ -1,93 +1,108 @@
 import { useState } from "react";
+import Header from "./components/layout/Header";
+import PageContainer from "./components/layout/PageContainer";
+import StatGrid from "./components/stats/StatGrid";
+import DoctorPanel from "./components/doctors/DoctorPanel";
+import AppointmentForm from "./components/appointments/AppointmentForm";
+import { appointments as initialAppointments } from "./data/appointments";
+import AppointmentList from "./components/appointments/AppointmentList";
+import { doctors } from "./data/doctors";
+import Footer from "./components/layout/Footer";
+import DoctorList from "./components/doctors/DoctorList";
+import ErrorBoundary from "./components/error/ErrorBoundary";
 
-import Header from "./components/Header";
-import Stats from "./components/Stats";
-import DoctorPanel from "./components/DoctorPanel";
-import BookingForm from "./components/BookingForm";
-import Appointments from "./components/Appointments";
-
-import doctors from "./data/doctors";
-import ErrorBoundary from "./components/ErrorBoundary";
-
-function App() {
-  const [selectedDoctor, setSelectedDoctor] = useState(null);
-  const [appointments, setAppointments] = useState([]);
-  const [successMessage, setSuccessMessage] = useState("");
-
-  function handleSelectDoctor(doctor) {
-    setSelectedDoctor(doctor);
-  }
-
-  function handleBookAppointment(appointment) {
+export default function App() {
+  const [selectedDoctorId, setSelectedDoctorId] = useState(null);
+  const [appointments, setAppointments] = useState(initialAppointments);
+  const handleAddAppointment = (newAppointment) => {
     setAppointments((currentAppointments) => [
+      newAppointment,
       ...currentAppointments,
-      appointment,
     ]);
+  };
+  const handleResetDoctor = () => {
+    setSelectedDoctorId(null);
+  };
 
-    setSelectedDoctor(null);
-
-    setSuccessMessage(
-      `Appointment booked successfully for ${appointment.patientName}.`,
-    );
-
-    setTimeout(() => {
-      setSuccessMessage("");
-    }, 3000);
-  }
-
-  function handleStatusChange(id, status) {
+  const handleStatusChange = (appointmentId, newStatus) => {
     setAppointments((currentAppointments) =>
       currentAppointments.map((appointment) =>
-        appointment.id === id ? { ...appointment, status } : appointment,
+        appointment.id === appointmentId
+          ? { ...appointment, status: newStatus }
+          : appointment,
       ),
     );
-  }
+  };
 
-  function handleDeleteAppointment(id) {
-    setAppointments((currentAppointments) =>
-      currentAppointments.filter((appointment) => appointment.id !== id),
+  const handleDeleteAppointment = (appointmentId) => {
+    const shouldDelete = window.confirm(
+      "Are you sure you want to delete this appointment?",
     );
-  }
+
+    if (!shouldDelete) {
+      return;
+    }
+
+    setAppointments((currentAppointments) =>
+      currentAppointments.filter(
+        (appointment) => appointment.id !== appointmentId,
+      ),
+    );
+  };
+
+  const totalDoctors = doctors.length;
+
+  const totalAppointments = appointments.length;
+
+  const pendingAppointments = appointments.filter(
+    (appointment) => appointment.status === "Pending",
+  ).length;
+
+  const completedAppointments = appointments.filter(
+    (appointment) => appointment.status === "Completed",
+  ).length;
 
   return (
-    <div className="min-h-screen bg-[#F1F5F9]">
+    <>
       <Header />
 
-      <main className="mx-auto max-w-[1200px] px-6 py-6">
-        <Stats doctors={doctors} appointments={appointments} />
+      <PageContainer>
+        <div className="flex flex-col gap-6">
+          <StatGrid
+            totalDoctors={totalDoctors}
+            totalAppointments={totalAppointments}
+            pendingAppointments={pendingAppointments}
+            completedAppointments={completedAppointments}
+          />
+          <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[2fr_3fr]">
+            <DoctorPanel>
+              {(filteredDoctors) => (
+                <DoctorList
+                  doctors={filteredDoctors}
+                  selectedDoctorId={selectedDoctorId}
+                  onSelect={setSelectedDoctorId}
+                />
+              )}
+            </DoctorPanel>
+            <ErrorBoundary>
+              <div className="flex flex-col gap-6">
+                <AppointmentForm
+                  selectedDoctorId={selectedDoctorId}
+                  onAddAppointment={handleAddAppointment}
+                  onResetDoctor={handleResetDoctor}
+                />
 
-        {successMessage && (
-          <div className="mt-4 rounded-[8px] border border-[#A7F3D0] bg-[#ECFDF5] px-4 py-3 text-sm font-medium text-[#047857]">
-            ✓ {successMessage}
+                <AppointmentList
+                  appointments={appointments}
+                  onStatusChange={handleStatusChange}
+                  onDelete={handleDeleteAppointment}
+                />
+              </div>
+            </ErrorBoundary>
           </div>
-        )}
-
-        <ErrorBoundary>
-          <div className="mt-6 grid gap-6 lg:grid-cols-[40%_60%]">
-            <DoctorPanel
-              selectedDoctor={selectedDoctor}
-              onSelectDoctor={handleSelectDoctor}
-            />
-
-            <BookingForm
-              selectedDoctor={selectedDoctor}
-              onBookAppointment={handleBookAppointment}
-            />
-          </div>
-        </ErrorBoundary>
-
-        <div className="mt-6">
-          <ErrorBoundary>
-            <Appointments
-              appointments={appointments}
-              onStatusChange={handleStatusChange}
-              onDelete={handleDeleteAppointment}
-            />
-          </ErrorBoundary>
         </div>
-      </main>
-    </div>
+      </PageContainer>
+      <Footer />
+    </>
   );
 }
-
-export default App;
